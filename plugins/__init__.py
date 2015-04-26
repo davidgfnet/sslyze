@@ -117,6 +117,7 @@ class PluginsFinder:
         import plugins.PluginSessionRenegotiation
         import plugins.PluginSessionResumption
         import plugins.PluginChromeSha1Deprecation
+        import plugins.PluginOpenSSL_CCS_injection
 
         for plugin_name in AVAILABLE_PLUGIN_NAMES:
             imported_module = importlib.import_module(plugin_name)
