@@ -22,7 +22,7 @@
 #-------------------------------------------------------------------------------
 
 from nassl import TLSV1, TLSV1_1, TLSV1_2, SSLV23, SSLV3
-import socket, struct, time, random
+import socket, struct, time, random, copy
 
 class PySSL():
 
@@ -97,8 +97,12 @@ class PySSL():
         self._port = port
         self._timeout = timeout
         self._sslVersion = sslver
+        self._ciphers = copy.deepcopy(PySSL.ssl3_cipher)
 
         self._sock = socket.create_connection((self._ip, self._port), self._timeout)
+
+    def addCipher(self, cipher):
+        self._ciphers.append(cipher)
 
     def srecv(self):
         r = self._sock.recv(4096)
@@ -118,7 +122,7 @@ class PySSL():
         return chr(t) + PySSL.ssl_tokens[self._sslVersion] + l + body
 
     def makeHello(self):
-        suites = "".join(PySSL.ssl3_cipher)
+        suites = "".join(self._ciphers)
         rand = "".join([ chr(int(256 * random.random())) for x in range(32) ])
         l  = struct.pack("!L", 39+len(suites))[1:] # 3 bytes
         sl = struct.pack("!H", len(suites))

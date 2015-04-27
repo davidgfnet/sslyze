@@ -118,6 +118,7 @@ class PluginsFinder:
         import plugins.PluginSessionResumption
         import plugins.PluginChromeSha1Deprecation
         import plugins.PluginOpenSSL_CCS_injection
+        import plugins.PluginTLS_Fallback_Support
 
         for plugin_name in AVAILABLE_PLUGIN_NAMES:
             imported_module = importlib.import_module(plugin_name)
