@@ -70,6 +70,7 @@ class PluginTLS_Fallback_Support(PluginBase.PluginBase):
 
         # Pick the largest version-1, if there are more than 2 obviously
         num_supported = sum([ 1 for x in support if support[x]])
+        hasscsv = False
         if num_supported > 1:
             vmax = max([ x for x in support if support[x] ])
             self._sslVersion = max([ x for x in support if support[x] and x != vmax ])
@@ -79,7 +80,7 @@ class PluginTLS_Fallback_Support(PluginBase.PluginBase):
             # Send hello and wait for server hello & cert
             self._pyssl.addCipher("\x56\x00")
             self._pyssl.send(self._pyssl.makeHello())
-            end,hasscsv = False,False
+            end = False
             while not end:
                 try:
                     if not self._pyssl.srecv(): break
@@ -94,7 +95,10 @@ class PluginTLS_Fallback_Support(PluginBase.PluginBase):
                     if record['type'] == 22:
                         end = True
 
-        if hasscsv:
+        if num_supported == 1:
+            scsvsupportTxt = 'N/A - Server only supports one version of the protocol'
+            scsvsupportXml = 'False'
+        elif hasscsv:
             scsvsupportTxt = 'OK - Server supports TLS_FALLBACK_SCSV'
             scsvsupportXml = 'True'
         else:
@@ -107,7 +111,7 @@ class PluginTLS_Fallback_Support(PluginBase.PluginBase):
 
         xmlOutput = Element(command, title=cmdTitle)
         if hasscsv:
-            xmlNode = Element('tls_fallback_scsv', isVulnerable=scsvsupportXml)
+            xmlNode = Element('tls_fallback_scsv', support=scsvsupportXml)
             xmlOutput.append(xmlNode)
 
         return PluginBase.PluginResult(txtOutput, xmlOutput)
