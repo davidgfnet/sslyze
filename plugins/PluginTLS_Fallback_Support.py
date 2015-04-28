@@ -110,9 +110,8 @@ class PluginTLS_Fallback_Support(PluginBase.PluginBase):
         txtOutput.append(self.FIELD_FORMAT(scsvsupportTxt, ""))
 
         xmlOutput = Element(command, title=cmdTitle)
-        if hasscsv:
-            xmlNode = Element('tls_fallback_scsv', support=scsvsupportXml)
-            xmlOutput.append(xmlNode)
+        xmlNode = Element('tls_fallback_scsv', support=scsvsupportXml)
+        xmlOutput.append(xmlNode)
 
         return PluginBase.PluginResult(txtOutput, xmlOutput)
 
