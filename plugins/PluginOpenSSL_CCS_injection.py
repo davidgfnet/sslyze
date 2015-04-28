@@ -113,9 +113,8 @@ class PluginOpenSSL_CCS_injection(PluginBase.PluginBase):
         txtOutput.append(self.FIELD_FORMAT(opensslccsTxt, ""))
 
         xmlOutput = Element(command, title=cmdTitle)
-        if vuln:
-            xmlNode = Element('openssl_ccs', isVulnerable=opensslccsXml)
-            xmlOutput.append(xmlNode)
+        xmlNode = Element('ccs_injection', isVulnerable=opensslccsXml)
+        xmlOutput.append(xmlNode)
 
         return PluginBase.PluginResult(txtOutput, xmlOutput)
 
