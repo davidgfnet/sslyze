@@ -47,7 +47,7 @@ for child in xml.getElementsByTagName("target"):
 	# Vuln info
 	ssl_report = {
 		"vulnerabilities": {
-			"heartbleed":    getXMLattr(child, "heartbleed", "isVulnerable"),
+			"heartbleed":    getXMLattr(child, "openSslHeartbleed", "isVulnerable"),
 			"ccs-injection": getXMLattr(child, "ccs_injection", "isVulnerable"),
 			# CRIMA attack
 			"tls-compression": getXMLattr(child, "compressionMethod", "isSupported"),
@@ -58,7 +58,7 @@ for child in xml.getElementsByTagName("target"):
 			"secure-renegotiation": getXMLattr(child, "sessionRenegotiation", "isSecure"),
 
 			# HSTS support
-			"hsts-support": getXMLattr(child, "hsts", "sentHstsHeader"),
+			"hsts-support": getXMLattr(child, "httpStrictTransportSecurity", "isSupported"),
 
 			# Cipher issues
 			"rc4-enabled": str(rc4),
